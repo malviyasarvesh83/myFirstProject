@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+            integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Book a call</h1>
+                <h6>Book a call slot and our representative will call you within 1hr of selected time</h6>
+            </div>
+            <form class="form" id="form">
+                <div class="form-control">
+                    <label>Name:</label>
+                    <input type="text" name="" id="name">
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error Msg</small>
+                </div>
+
+                <div class="form-control">
+                    <label>Email:</label>
+                    <input type="Email" name="" id="email">
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error Msg</small>
+                </div>
+
+                <div class="form-control">
+                    <label>Phone:</label>
+                    <input type="number" name="" id="phone">
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error Msg</small>
+                </div>
+
+                <div class="form-control">
+                    <label>Time for call:</label>
+                    <input type="date" name="" id="date">
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error Msg</small>
+                </div>
+
+                <div class="form-control">
+                    <input type="time" name="" id="time">
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>
+                    <small>Error Msg</small>
+                </div>
+                <input type="submit" value="GET A CALL" class="btn" name="">
+            </form>
+        </div>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script type="text/javascript">
+
+            const form = document.getElementById('form');
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const phone = document.getElementById('phone');
+            const date = document.getElementById('date');
+            const time = document.getElementById('time');
+
+            // Add Event
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                validate();
+            })
+
+            const sendData = (nameval, emailval, phoneval, dateval, timeval, sRate, count) => {
+                if (sRate === count) {
+                    alert('Call Booked Successfully');
+                    swal("Welcome! " + nameval, "Call Booked Successfully", "success");
+                    console.log("Name = "+nameval);
+                    console.log("Email = "+emailval);
+                    console.log("Phone Number = "+phoneval);
+                    console.log("Date = "+dateval);
+                    console.log("Time = "+timeval);
+
+                    clearField();
+                }
+            }
+
+            // for final data validation
+
+            const successMsg = (nameval, emailval, phoneval, dateval, timeval) => {
+                let formCon = document.getElementsByClassName('form-control');
+                var count = formCon.length - 1;
+                for (var i = 0; i < formCon.length; i++) {
+                    if (formCon[i].className === "form-control success") {
+                        var sRate = 0 + i;
+                        console.log(sRate);
+                        sendData(nameval, emailval, phoneval, dateval, timeval, sRate, count);
+                    } else {
+                        return false;
+                    }
+                }
+            }
+
+            // email validate
+
+            const isEmail = (emailval) => {
+                var atSymbol = emailval.indexOf("@");
+                if (atSymbol < 1) return false;
+                var dot = emailval.lastIndexOf('.');
+                if (dot <= atSymbol + 2) return false;
+                if (dot === emailval.length - 1) return false;
+                return true;
+            }
+
+            // define the validate function
+
+            const validate = () => {
+                const nameval = name.value.trim();
+                const emailval = email.value.trim();
+                const phoneval = phone.value.trim();
+                const dateval = date.value.trim();
+                const timeval = time.value.trim();
+
+                // validate name
+                if (nameval === "") {
+                    setErrorMsg(name, 'name cannot be blank');
+                } else if (nameval.length <= 2) {
+                    setErrorMsg(name, 'name min 3 character');
+                } else {
+                    setSuccessMsg(name);
+                }
+
+                // validate email
+                if (emailval === "") {
+                    setErrorMsg(email, 'email cannot be blank');
+                } else if (!isEmail(emailval)) {
+                    setErrorMsg(email, 'Not a valid Email');
+                } else {
+                    setSuccessMsg(email);
+                }
+
+                // validate Phone
+                if (phoneval === "") {
+                    setErrorMsg(phone, 'phone number cannot be blank');
+                } else if (phoneval.length != 10) {
+                    setErrorMsg(phone, 'Not a valid Phone number');
+                } else {
+                    setSuccessMsg(phone);
+                }
+
+                // validate Date
+                if (dateval === "") {
+                    setErrorMsg(date, 'date cannot be blank');
+                } else if (dateval.length <= 3) {
+                    setErrorMsg(date, 'Minimum 6 character');
+                } else {
+                    setSuccessMsg(date);
+                }
+
+                // validate time
+                if (timeval === "") {
+                    setErrorMsg(time, 'time cannot be blank');
+                } else if (timeval.length <= 3) {
+                    setErrorMsg(time, 'Minimum 6 character');
+                } else {
+                    setSuccessMsg(time);
+                }
+
+                successMsg(nameval, emailval, phoneval, dateval, timeval);
+            }
+
+            function setErrorMsg(input, errormsgs) {
+                const formControl = input.parentElement;
+                const small = formControl.querySelector('small');
+                formControl.className = "form-control error";
+                small.innerText = errormsgs;
+            }
+
+            function setSuccessMsg(input) {
+                const formControl = input.parentElement;
+                formControl.className = "form-control success";
+            }
+
+            function clearField(input) {
+                document.getElementById("name").value='';
+                document.getElementById("email").value = '';
+                document.getElementById("phone").value = '';
+                document.getElementById("date").value = '';
+                document.getElementById("time").value = '';
+            }
+
+        </script>
+    </body>
+
+</html>
